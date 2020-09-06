@@ -18,6 +18,8 @@ RUN cd back && npm i --only=production
 ENV LOG_FOLDER /app/logs
 ENV NODE_ENV production
 
+RUN apk add --update --no-cache openssh-client
+
 EXPOSE 4000
 
 WORKDIR /app/back

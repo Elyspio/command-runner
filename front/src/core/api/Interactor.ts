@@ -1,9 +1,11 @@
+import {Model} from "../model";
+
 type Method = "GET" | "POST" | "PUT" | "DELETE"
 
 
-export class Interactor {
+export abstract class Interactor {
 
-    private base: string
+    private readonly base: string
 
 
     constructor(endpoint: string) {
@@ -25,6 +27,9 @@ export class Interactor {
 
     private async call(url: string, method: Method, urlParameters?: object, bodyParameters?: object) {
 
+
+        console.log("cookie", document.cookie,  Model.Account.isAuthenticated());
+
         let urlSearchParams = ""
         let body: string | undefined;
         if (urlParameters) {
@@ -42,3 +47,5 @@ export class Interactor {
     }
 
 }
+
+

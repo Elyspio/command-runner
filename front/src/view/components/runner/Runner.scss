@@ -1,0 +1,21 @@
+.Runner {
+	padding: 1rem;
+
+	.form {
+		display: flex;
+		> * {
+			margin-right: 2rem;
+		}
+	}
+
+	.output {
+		margin-top: 2rem;
+		> * {
+			margin-bottom: 2rem;
+		}
+	}
+
+	.error {
+		background: rgba(255, 0, 0, 0.2);
+	}
+}

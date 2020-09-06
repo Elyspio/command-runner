@@ -1,14 +1,14 @@
 version: "3"
 services:
   server:
-    image: elyspio/haproxy-virtualizer:arm64
+    image: elyspio/command-runner:arm64
     ports:
-      - "4001:4000"
+      - "4003:4000"
     environment:
       LOG_FOLDER: /var/logs
+      SSH_USER: docker_admin
     volumes:
-      - /etc/haproxy/haproxy.cfg/:/etc/haproxy/haproxy.cfg
-      - /apps/haproxy-virtualizer/logs:/var/logs
-      - /apps/haproxy-virtualizer/accounts.json:/app/accounts.json
+      - /apps/command-runner/logs:/var/logs
+      - /apps/command-runner/.ssh/:~/.ssh
     restart: always
-    container_name: haproxy-visualizer
+    container_name: command-runner

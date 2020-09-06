@@ -1,4 +1,3 @@
-
 import {arch, platform} from "os"
 export namespace Core {
 
@@ -8,5 +7,5 @@ export namespace Core {
         platform: ReturnType<typeof platform>
     }
 
-    
+
 }

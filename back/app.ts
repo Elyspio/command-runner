@@ -1,5 +1,5 @@
 import E, {Express} from "express"
-import {router} from "./routes/example";
+import {router} from "./routes/runner";
 import {handleError, middlewares} from "./middleware/middleware";
 import {ArgumentParser} from 'argparse'
 import path from "path";
@@ -7,6 +7,9 @@ import {logger} from "./util/logger";
 
 const express = require('express');
 export const app: Express = express();
+
+
+
 
 app.use(...middlewares);
 app.use('/core', router);
