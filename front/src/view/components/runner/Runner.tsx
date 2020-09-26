@@ -1,7 +1,6 @@
 import React from 'react';
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import {Api} from "../../../core/api/runner";
 import Box from "@material-ui/core/Box";
 import "./Runner.scss"
 import {Utils} from "../util/Utils";
@@ -14,12 +13,13 @@ import Container from "@material-ui/core/Container";
 import {Model} from "../../../core/model";
 import {Helper} from "../../helper";
 import {createModal} from "../../helper/modal";
+import {Api} from "../../../core/api";
 
 
 function Runner() {
 
     const [command, setCommand] = React.useState("");
-    const [wd, setWd] = React.useState("/");
+    const [directory, setDirectory] = React.useState("/");
 
     const result = {
         value: Utils.Component.extract(React.useState("")),
@@ -43,22 +43,14 @@ function Runner() {
         if (!Model.Account.isAuthenticated()) {
 
             const text : createModal["text"] = {
-                content: "CONTENT",
-                title: "TITLE"
+                title: "Authentication error",
+                content: "You need to be logged in to access this page"
             }
 
             let actions : createModal["actions"] = [{
-                text: "OK",
-                onClick: () => console.log("ok"),
+                text: "Login on other page",
+                onClick: Model.Account.goToLoginPage,
                 role: "ok"
-
-            }, {
-                text: "OTHER",
-                onClick: () => console.log("other")
-            }, {
-                text: "CANCEL",
-                onClick: () => console.log("ok"),
-                role: "cancel"
             }];
 
 
@@ -73,7 +65,7 @@ function Runner() {
         let errorValue = "";
 
         try {
-            resultValue = await Api.Runner.instance.run(command).then(x => x.text());
+            resultValue = await Api.Runner.run(command).then(x => x.text());
         } catch (e) {
             errorValue = e.message;
         }
@@ -90,7 +82,7 @@ function Runner() {
         <Container className={"Runner"}>
             <Box className="form">
                 <TextField label="Command" value={command} onChange={e => setCommand(e.target.value)} variant="outlined"/>
-                <TextField label="Working directory" value={wd} onChange={e => setWd(e.target.value)} variant="outlined"/>
+                <TextField label="Working directory" value={directory} onChange={e => setDirectory(e.target.value)} variant="outlined"/>
                 <Button color={"primary"} variant={"outlined"} onClick={run}>Run</Button>
             </Box>
 

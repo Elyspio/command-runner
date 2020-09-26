@@ -1,5 +1,3 @@
-import {Model} from "../model";
-
 type Method = "GET" | "POST" | "PUT" | "DELETE"
 
 
@@ -13,8 +11,8 @@ export abstract class Interactor {
     }
 
 
-    protected async get(url: string, urlParameters?: object, bodyParameters?: object) {
-        return this.call(url, "GET", urlParameters, bodyParameters);
+    protected async get(url: string, urlParameters?: object,) {
+        return this.call(url, "GET", urlParameters);
     }
 
     protected async post(url: string, urlParameters?: object, bodyParameters?: object) {
@@ -26,9 +24,6 @@ export abstract class Interactor {
     }
 
     private async call(url: string, method: Method, urlParameters?: object, bodyParameters?: object) {
-
-
-        console.log("cookie", document.cookie,  Model.Account.isAuthenticated());
 
         let urlSearchParams = ""
         let body: string | undefined;

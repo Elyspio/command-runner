@@ -1,4 +1,5 @@
 import {arch, platform} from "os"
+
 export namespace Core {
 
     export interface Config {

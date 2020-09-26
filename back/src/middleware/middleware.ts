@@ -6,7 +6,7 @@ const cors = require("cors");
 export const middlewares: any[] = [];
 
 let logRequest = (req: express.Request, res: express.Response, next: Function) => {
-    logger?.log("request", undefined, {
+    logger?.log("request", "", {
         method: req.method,
         url: req.originalUrl,
         from: req.hostname,
@@ -64,7 +64,7 @@ export function handleError(err: Err, req: express.Request, res: express.Respons
         code: err.statusCode,
         message: err.message,
         name: err.name,
-        stack: err.stack.split("\n"),
+        stack: err.stack?.split("\n"),
     });
     console.error(err);
 }
@@ -74,7 +74,7 @@ middlewares.push(logRequest, logResponseBody)
 
 
 middlewares.push(
-    express.json(),
+    bodyParser.json(),
     bodyParser.urlencoded({extended: true}),
     cors()
 )

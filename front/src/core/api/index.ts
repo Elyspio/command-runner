@@ -1,6 +1,6 @@
-import {Account as AccountClass} from "./account"
+import {Runner as AccountClass} from "./runner"
 export module Api {
-    export const Account = AccountClass
+    export const Runner = AccountClass.instance
 }
 
 
