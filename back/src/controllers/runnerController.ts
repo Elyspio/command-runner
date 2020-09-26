@@ -8,12 +8,12 @@ import {Account, Runner} from "../core/service";
 export class RunnerController {
 
     @Post("/")
-    async run(@BodyParams("command") command: string, @Cookies() cookies) {
+    async run(@BodyParams("command") command: string, @BodyParams("cwd") cwd: string, @Cookies() cookies) {
 
         if (!process.env.IGNORE_AUTH && !await Account.isAuthorized(cookies[authorization_cookie_name])) {
             throw new Forbidden("You are not logged in")
         } else {
-            return Runner.run(command);
+            return Runner.run(command, {path: cwd});
         }
     }
 }

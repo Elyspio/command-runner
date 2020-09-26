@@ -3,30 +3,42 @@ import {Helper} from "../../../util/helper";
 import ExecReturn = Helper.ExecReturn;
 
 
-type run = (command: string) => ExecReturn
+type run = (command: string, option?: {path: string}) => Promise<ExecReturn>
 
 export namespace RunnerService {
 
-    export const run: run = async (command) => {
-        return await isContainer() || await isWsl() ? runFromContainer(command) : runFromRealMachine(command);
+    export const run: run = async (command, options) => {
+        return await isContainer() || await isWsl() ? runFromContainer(command, options) : runFromRealMachine(command, options);
     }
 
-    const runFromContainer: run = async (command) => {
+    const runFromContainer: run = async (command, options) => {
 
         const hostIp = process.env.SSH_HOST ?? await runFromRealMachine("/sbin/ip route|awk '/default/ { print $3 }'")
         const user = process.env.SSH_USER
         if (!user) {
             throw new Error("Environment variable SSH_USER must be set")
         }
+
+        if(options?.path) {
+            command  = `"cd ${options.path} && ${command}"`
+        }
+
         $log.info("Run from container", {user, hostIp, command})
         command = `ssh ${user}@${hostIp} ${command}`
+
+
 
         return (await Helper.exec(command))
     }
 
-    const runFromRealMachine: run = async (command) => {
+    const runFromRealMachine: run = async (command, options) => {
         $log.info("Run on host", {command})
-        return (await Helper.exec(command))
+
+        if(options?.path) {
+            command  = `cd ${options.path} && ${command}`
+        }
+
+        return await Helper.exec(command)
     }
 
 }

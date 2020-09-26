@@ -11,9 +11,10 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Container from "@material-ui/core/Container";
 import {Model} from "../../../core/model";
-import {Helper} from "../../helper";
 import {createModal} from "../../helper/modal";
 import {Api} from "../../../core/api";
+import {Helper as BackendHelper } from "../../../../../back/src/util/helper"
+import {Helper} from "../../helper";
 
 
 function Runner() {
@@ -61,22 +62,22 @@ function Runner() {
 
     const run = React.useCallback(async () => {
 
-        let resultValue = ""
-        let errorValue = "";
+        let resultValue = await Api.Runner.run(command, directory);
 
-        try {
-            resultValue = await Api.Runner.run(command).then(x => x.text());
-        } catch (e) {
-            errorValue = e.message;
+        if(resultValue?.error) {
+            result.open.set(false);
+            error.open.set(true);
+            error.value.set(resultValue?.stderr)
+            result.value.set("")
+        }
+        if(resultValue?.stdout) {
+            error.open.set(false);
+            result.open.set(true);
+            error.value.set("")
+            result.value.set(resultValue?.stdout)
         }
 
-        result.value.set(resultValue);
-        if (resultValue) result.open.set(true);
-
-        error.value.set(errorValue);
-        if (errorValue) error.open.set(true);
-
-    }, [command, error.open, error.value, result.open, result.value])
+    }, [command, directory, error.open, error.value, result.open, result.value])
 
     return (
         <Container className={"Runner"}>

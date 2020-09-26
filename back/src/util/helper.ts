@@ -22,15 +22,15 @@ export namespace Helper {
 
     };
 
-    export type ExecReturn = Promise<{
+    export type ExecReturn = {
         stdout: string,
         stderr: string,
         error: ExecException | null,
         code: number | null,
         signal: NodeJS.Signals | null
-    }>
+    }
 
-    export const exec = (command: string): ExecReturn => {
+    export const exec = (command: string): Promise<ExecReturn> => {
         return new Promise(resolve => {
             let c, s;
             _exec(command, (error, stdout, stderr) => {

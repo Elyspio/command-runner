@@ -1,5 +1,6 @@
 import {Interactor} from "./Interactor";
 import {getApiPath} from "../../config/api";
+import {Helper} from "../../../../back/src/util/helper";
 
     export class Runner extends Interactor {
 
@@ -9,13 +10,14 @@ import {getApiPath} from "../../config/api";
             return this._instance;
         }
 
-        public async run(command: string) {
+        public async run(command: string, cwd: string): Promise<Helper.ExecReturn> {
 
             const body  = {
-                command
+                command,
+                cwd
             };
 
-            return await super.post("/run", undefined, body)
+            return JSON.parse(await (await super.post("/run", undefined, body)).text())
         }
     }
 
