@@ -1,8 +1,9 @@
 import {Configuration, Inject} from '@tsed/di';
 import {$log, PlatformApplication} from '@tsed/common';
-import {middlewares} from './middleware/common/raw';
 import * as path from 'path';
 import {Helper} from "./util/helper";
+import "@tsed/swagger"
+import {middlewares} from "./middlewares/common/raw";
 
 export const rootDir = __dirname;
 
@@ -26,7 +27,12 @@ $log.info('frontPath', {frontPath, rootDir});
         '/': [
             {root: frontPath}
         ]
-    }
+    },
+    swagger: [{
+        path: "/swagger",
+        specVersion: "3.0.1"
+    }]
+
 })
 export class Server {
 

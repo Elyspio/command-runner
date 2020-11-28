@@ -4,10 +4,9 @@ import * as os from "os";
 
 const {writeFile, readFile} = promises
 
-export namespace Storage {
+export class StorageService {
 
-
-    export async function store(name: string, data: string) {
+    async store(name: string, data: string) {
 
         if (name[0] === "~") {
             name = path.join(os.homedir(), name.slice(1))
@@ -16,7 +15,7 @@ export namespace Storage {
         return writeFile(path.resolve(name), data);
     }
 
-    export async function read(name: string) {
+    async read(name: string) {
         return (await readFile(name)).toString()
     }
 }

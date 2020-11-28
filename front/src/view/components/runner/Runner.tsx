@@ -3,18 +3,15 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import "./Runner.scss"
-import {Utils} from "../util/Utils";
+import {extract} from "../util/Utils";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import Typography from "@material-ui/core/Typography";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Container from "@material-ui/core/Container";
-import {Model} from "../../../core/model";
-import {createModal} from "../../helper/modal";
-import {Api} from "../../../core/api";
-import {Helper as BackendHelper } from "../../../../../back/src/util/helper"
-import {Helper} from "../../helper";
+import {Apis} from "../../../core/apis";
+import {Services} from "../../../core/services";
 
 
 function Runner() {
@@ -23,8 +20,8 @@ function Runner() {
     const [directory, setDirectory] = React.useState("/");
 
     const result = {
-        value: Utils.Component.extract(React.useState("")),
-        open: Utils.Component.extract(React.useState(false)),
+        value: extract(React.useState("")),
+        open: extract(React.useState(false)),
         click: (e: React.MouseEvent) => {
             result.open.set(!result.open.get)
             e.stopPropagation()
@@ -32,45 +29,26 @@ function Runner() {
     }
 
     const error = {
-        value: Utils.Component.extract(React.useState("")),
-        open: Utils.Component.extract(React.useState(false)),
+        value: extract(React.useState("")),
+        open: extract(React.useState(false)),
         click: (e: React.MouseEvent) => {
             error.open.set(!error.open.get)
             e.stopPropagation()
         }
     }
 
-    React.useEffect(() => {
-        if (!Model.Account.isAuthenticated()) {
-
-            const text : createModal["text"] = {
-                title: "Authentication error",
-                content: "You need to be logged in to access this page"
-            }
-
-            let actions : createModal["actions"] = [{
-                text: "Login on other page",
-                onClick: Model.Account.goToLoginPage,
-                role: "ok"
-            }];
-
-
-            Helper.Modal.createPortalModal({text, actions})
-        }
-    }, [])
-
 
     const run = React.useCallback(async () => {
 
-        let resultValue = await Api.Runner.run(command, directory);
+        let {data: resultValue} = await Services.runner.run({command, cwd: directory});
 
-        if(resultValue?.error) {
+        if (resultValue?.error) {
             result.open.set(false);
             error.open.set(true);
             error.value.set(resultValue?.stderr)
             result.value.set("")
         }
-        if(resultValue?.stdout) {
+        if (resultValue?.stdout) {
             error.open.set(false);
             result.open.set(true);
             error.value.set("")
@@ -90,34 +68,34 @@ function Runner() {
             <Box className={"output"}>
 
                 {result.value.get && <Accordion expanded={result.open.get} onClick={result.click} className={"result"}>
-					<AccordionSummary
-						expandIcon={<ExpandMoreIcon/>}
-						aria-controls="panel1a-content"
-						id="panel1a-header"
-					>
-						<Typography className={"title"}>Result</Typography>
-					</AccordionSummary>
-					<AccordionDetails>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon/>}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                    >
+                        <Typography className={"title"}>Result</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
                           <pre className={"content"}>
                               {result.value.get}
                           </pre>
-					</AccordionDetails>
-				</Accordion>}
+                    </AccordionDetails>
+                </Accordion>}
 
                 {error.value.get && <Accordion expanded={error.open.get} onClick={error.click} className={"error"}>
-					<AccordionSummary
-						expandIcon={<ExpandMoreIcon/>}
-						aria-controls="panel1a-content"
-						id="panel1a-header"
-					>
-						<Typography className={"title"}>Error</Typography>
-					</AccordionSummary>
-					<AccordionDetails>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon/>}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                    >
+                        <Typography className={"title"}>Error</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
                           <pre className={"content"}>
                               {error.value.get}
                           </pre>
-					</AccordionDetails>
-				</Accordion>}
+                    </AccordionDetails>
+                </Accordion>}
 
             </Box>
         </Container>

@@ -1,10 +1,7 @@
-import * as IAccount from "./accounts"
-import * as IApi from "./api"
-import * as ITheme from "./theme"
+import * as Api from "./api"
+import * as Theme from "./theme"
 
-export module Config {
-    export const Account = IAccount;
-    export const Api = IApi;
-    export const Theme = ITheme;
-
+export const  Config =  {
+    api : Api,
+    theme: Theme
 }

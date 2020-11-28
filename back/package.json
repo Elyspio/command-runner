@@ -3,36 +3,36 @@
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
-		"start": "SSH_HOST=172.24.64.1 SSH_USER=jonag IGNORE_AUTH=true  nodemon --legacy-watch src/app.ts",
+		"start": "cross-env IGNORE_AUTH=true  nodemon src/app.ts",
 		"build": "tsc",
-		"docker": "wsl ../docker/docker.sh",
-		"push": "wsl ../docker/arm/compose.sh"
+		"docker": "wsl ../docker/docker.sh"
 	},
 	"dependencies": {
+		"@tsed/common": "^6.10.3",
+		"@tsed/core": "^6.10.3",
+		"@tsed/di": "^6.10.3",
+		"@tsed/platform-express": "^6.10.3",
+		"@tsed/swagger": "^6.10.3",
+		"@tsed/schema": "^6.10.3",
+		"axios": "^0.20.0",
 		"body-parser": "^1.19.0",
 		"compression": "^1.7.4",
 		"cookie-parser": "^1.4.5",
 		"cors": "^2.8.5",
-		"dayjs": "^1.8.35",
-		"express": "^4.17.1",
+		"dayjs": "^1.9.1",
 		"md5": "^2.3.0",
 		"method-override": "^3.0.0",
-		"node-fetch": "^2.6.1",
-		"winston": "^3.3.3",
 		"tslib": "2.0.1",
-		"@tsed/common": "^5.65.2",
-		"@tsed/core": "^5.65.2",
-		"@tsed/di": "^5.65.2",
-		"@tsed/platform-express": "^5.65.2"
+		"winston": "^3.3.3"
 	},
 	"devDependencies": {
-		"@types/express": "^4.17.8",
 		"@types/cors": "^2.8.7",
+		"@types/express": "^4.17.8",
 		"@types/md5": "^2.2.0",
 		"@types/node": "^14.6.4",
-		"@types/node-fetch": "^2.5.7",
+		"cross-env": "^7.0.2",
 		"nodemon": "latest",
-		"ts-node": "latest",
-		"typescript": "latest"
+		"ts-node": "^9.0.0",
+		"typescript": "^4.0.3"
 	}
 }

@@ -8,7 +8,7 @@ import {toggleTheme} from "../store/module/theme/action";
 import Appbar from "./Appbar/Appbar";
 import Brightness5Icon from '@material-ui/icons/Brightness5';
 import Runner from "./runner/Runner";
-import Drawer from "@bit/elyspio.test.drawer";
+import {Drawer} from "./util/drawer/Drawer";
 
 const mapStateToProps = (state: RootState) => ({theme: state.theme.current})
 
@@ -33,7 +33,7 @@ class Application extends React.Component<Props & ReduxTypes, State> {
                     <div className="content">
                         <Appbar appName={"Runner"}/>
                         <Runner/>
-                        <div id="modal"></div>
+                        <div id="modal"/>
                     </div>
                 </Drawer>
             </Paper>
