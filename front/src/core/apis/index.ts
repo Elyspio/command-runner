@@ -1,6 +1,24 @@
 import {RunnerApi} from "./back";
-import {getApiPath} from "../../config/api";
+import {getEndpoint} from "../../store/module/config/reducer";
+import {AuthenticationApi} from "./authentication";
 
-export const Apis = {
-    runner: new RunnerApi({basePath: getApiPath()})
+
+type Apis = {
+    core: {
+        runner: RunnerApi,
+    },
+    authentication: AuthenticationApi
 }
+
+
+export function createApis(): Apis {
+    Apis = {
+        core: {
+            runner: new RunnerApi({basePath: getEndpoint("core")}),
+        },
+        authentication: new AuthenticationApi({basePath: getEndpoint("authentication")})
+    }
+    return Apis;
+}
+
+export var Apis: Apis = createApis();

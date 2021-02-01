@@ -3,12 +3,12 @@ import {Paper} from "@material-ui/core";
 import "./Application.scss"
 import {connect, ConnectedProps} from "react-redux";
 import {Dispatch} from "redux";
-import {RootState} from "../store/reducer";
-import {toggleTheme} from "../store/module/theme/action";
-import Appbar from "./Appbar/Appbar";
+import {toggleTheme} from "../../store/module/theme/action";
+import Appbar from "./appbar/Appbar";
 import Brightness5Icon from '@material-ui/icons/Brightness5';
 import Runner from "./runner/Runner";
 import {Drawer} from "./util/drawer/Drawer";
+import {RootState} from "../../store";
 
 const mapStateToProps = (state: RootState) => ({theme: state.theme.current})
 

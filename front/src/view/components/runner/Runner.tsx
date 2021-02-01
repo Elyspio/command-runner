@@ -10,7 +10,6 @@ import Typography from "@material-ui/core/Typography";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Container from "@material-ui/core/Container";
-import {Apis} from "../../../core/apis";
 import {Services} from "../../../core/services";
 
 

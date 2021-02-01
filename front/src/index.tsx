@@ -2,11 +2,10 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import {connect, ConnectedProps, Provider} from "react-redux";
-import store from "./view/store";
+import store, {RootState} from "./store";
 import Application from "./view/components/Application";
 import {ThemeProvider} from '@material-ui/core';
 import {themes} from "./config/theme";
-import {RootState} from "./view/store/reducer";
 
 
 const mapStateToProps = (state: RootState) => ({theme: state.theme.current})
@@ -38,4 +37,4 @@ ReactDOM.render(
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
+// Learn more about services workers: https://bit.ly/CRA-PWA

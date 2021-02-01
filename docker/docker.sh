@@ -18,7 +18,7 @@ fi
 
 cp "$DIR/DockerFile" "$DIR/../DockerFile"
 
-cd "$DIR/.." &&  docker buildx build --platform linux/amd64  -f ./DockerFile  -t elyspio/command-runner --push .
+cd "$DIR/.." &&  docker buildx build --platform linux/amd64,linux/arm64  -f ./DockerFile  -t elyspio/command-runner --push .
 
 rm "$DIR/../DockerFile"
 

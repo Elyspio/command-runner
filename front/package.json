@@ -2,37 +2,32 @@
 	"name": "front",
 	"version": "0.1.0",
 	"private": true,
-	"homepage": "/runner/aero/",
+	"homepage": "/runner/rama-x/",
 	"scripts": {
 		"start": "react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
-		"docker": "cd ../back && yarn docker",
-		"generate-back-api": "python ./scripts/generate-front-apis.py"
+		"docker": "cd ../back && yarn docker"
 	},
 	"dependencies": {
-		"@material-ui/core": "4.11.0",
-		"@material-ui/icons": "4.9.1",
-		"@reduxjs/toolkit": "1.4.0",
+		"@material-ui/core": "4.11.3",
+		"@material-ui/icons": "4.11.2",
+		"@reduxjs/toolkit": "1.5.0",
 		"react": "^17.0.1",
 		"react-dom": "^17.0.1",
 		"react-redux": "7.2.2",
 		"redux": "4.0.5",
-		"axios": "0.20.0"
-	},
-	"peerDependencies": {
-		"react": "16.8.0",
-		"react-dom": "16.8.0"
+		"axios": "0.21.1"
 	},
 	"devDependencies": {
-		"@types/node": "^14.14.9",
-		"@types/react": "^16.9.56",
-		"@types/react-dom": "^16.9.9",
-		"@types/react-redux": "^7.1.11",
-		"node-sass": "4.14.1",
-		"react-scripts": "^3",
-		"typescript": "3"
+		"@types/node": "^14.14.22",
+		"@types/react": "^17.0.0",
+		"@types/react-dom": "^17.0.0",
+		"@types/react-redux": "^7.1.16",
+		"node-sass": "^4",
+		"react-scripts": "^4.0.1",
+		"typescript": "4.1.3"
 	},
 	"eslintConfig": {
 		"extends": "react-app"
