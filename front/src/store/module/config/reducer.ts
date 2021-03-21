@@ -7,7 +7,7 @@ function removeDuplicationSlash(str: string) {
 }
 
 const xhr = new XMLHttpRequest()
-xhr.open("GET", window.location.origin +  removeDuplicationSlash(window.location.pathname + "/conf.json"), false)
+xhr.open("GET", window.location.origin + removeDuplicationSlash(window.location.pathname + "/conf.json"), false)
 xhr.send()
 const initConf: ConfigState = JSON.parse(xhr.responseText)
 

@@ -5,7 +5,7 @@
 	"scripts": {
 		"start": "cross-env IGNORE_AUTH=true  nodemon src/app.ts",
 		"build": "tsc",
-		"docker": "wsl ../docker/docker.sh"
+		"docker": "docker buildx build --platform linux/amd64,linux/arm64  -f ./DockerFile  -t elyspio/command-runner --push ."
 	},
 	"dependencies": {
 		"@tsed/common": "^6.23.4",

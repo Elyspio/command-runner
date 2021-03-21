@@ -1,4 +1,4 @@
-import {BodyParams, Controller, Cookies, Post, UseBefore} from "@tsed/common";
+import {BodyParams, Controller, Post, UseBefore} from "@tsed/common";
 import {Services} from "../../../core/services";
 import {Returns} from "@tsed/schema";
 import {RunResponse} from "./models";
@@ -12,7 +12,7 @@ export class Runner {
     @UseBefore(RequireLogin)
     @Returns(401, UnauthorizedModel)
     @Returns(200, RunResponse)
-    async run(@BodyParams("command") command: string, @BodyParams("cwd") cwd: string, @Cookies() cookies) {
+    async run(@BodyParams("command") command: string, @BodyParams("cwd") cwd: string) {
         return Services.runner.run(command, {path: cwd});
     }
 }
