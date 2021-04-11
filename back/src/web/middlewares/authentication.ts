@@ -3,6 +3,7 @@ import {ArrayOf, Integer, Property, Returns} from "@tsed/schema";
 import {Unauthorized} from "@tsed/exceptions"
 import {Services} from "../../core/services";
 import {Request} from "express"
+import {authorization_cookie_login, authorization_cookie_token} from "../../config/authentication";
 
 export class UnauthorizedModel {
     @ArrayOf(String)
@@ -19,15 +20,22 @@ export class UnauthorizedModel {
 @Middleware()
 export class RequireLogin implements IMiddleware {
     @Returns(401, UnauthorizedModel)
-    public async use(@Req() req: Request, @QueryParams("token") token: string, @Cookies() cookies) {
+    public async use(@Req() {headers, cookies}: Request, @QueryParams("token") token: string) {
 
 
         $log.info("New request checking IGNORE_AUTH value", process.env.IGNORE_AUTH)
 
         if (!process.env.IGNORE_AUTH) {
             try {
-                $log.info("RequireLogin", {elyspio_authorisation_token: cookies.elyspio_authorisation_token, token})
-                token = token ?? cookies.elyspio_authorisation_token;
+
+                const cookieAuth = cookies[authorization_cookie_token]
+                const headerToken = headers[authorization_cookie_token];
+
+                $log.info("RequireLogin", {cookies: cookies.authorization_cookie_token, token, header: headerToken})
+
+                token = token ?? cookieAuth;
+                token = token ?? headerToken
+
 
                 if (await Services.authentication.isAuthenticated(token)) {
                     return true

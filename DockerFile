@@ -22,10 +22,13 @@ RUN cd /front && npm run build
 # Running
 FROM node:14-alpine
 
-COPY --from=builder-front /front/build /front/build
+COPY --from=builder-front /front/build /app/front/build
 COPY --from=builder-back /back/package.json /back/package.json
 RUN cd /back && npm i --only=production
 COPY --from=builder-back /back/build /back/build
+
+RUN apk add --no-cache openssh
+
 
 WORKDIR /back
 ENV LOG_FOLDER /logs
