@@ -1,38 +1,57 @@
-import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import {connect, ConnectedProps, Provider} from "react-redux";
-import store, {RootState} from "./store";
-import Application from "./view/components/Application";
-import {ThemeProvider} from '@material-ui/core';
-import {themes} from "./config/theme";
+import "reflect-metadata";
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import { connect, ConnectedProps, Provider } from "react-redux";
+import store, { StoreState } from "./store";
+import { StyledEngineProvider, Theme, ThemeProvider } from "@mui/material";
+import { themes } from "./config/theme";
+import { Application } from "./view/components/Application";
+import { Provider as DiProvider } from "inversify-react";
+import { container } from "./core/di";
 
+declare global {
+	interface Window {
+		config: {
+			endpoints: {
+				core: string;
+				authentication: string;
+			};
+		};
+	}
+}
 
-const mapStateToProps = (state: RootState) => ({theme: state.theme.current})
+declare module "@mui/styles/defaultTheme" {
+	// eslint-disable-next-line @typescript-eslint/no-empty-interface
+	interface DefaultTheme extends Theme {}
+}
 
+const mapStateToProps = (state: StoreState) => ({ theme: state.theme.current });
 
 const connector = connect(mapStateToProps);
 type ReduxTypes = ConnectedProps<typeof connector>;
 
-class Wrapper extends Component<ReduxTypes> {
-    render() {
-        const theme = this.props.theme === "dark" ? themes.dark : themes.light;
+function Wrapper(props: ReduxTypes) {
+	const theme = props.theme === "dark" ? themes.dark : themes.light;
 
-        return (
-            <ThemeProvider theme={theme}>
-                <Application/>
-            </ThemeProvider>
-        );
-    }
+	return (
+		<DiProvider container={container}>
+			<StyledEngineProvider injectFirst>
+				<ThemeProvider theme={theme}>
+					<Application />
+				</ThemeProvider>
+			</StyledEngineProvider>
+		</DiProvider>
+	);
 }
 
 const ConnectedWrapper = connector(Wrapper) as any;
 
 ReactDOM.render(
-    <Provider store={store}>
-        <ConnectedWrapper/>
-    </Provider>,
-    document.getElementById('root')
+	<Provider store={store}>
+		<ConnectedWrapper />
+	</Provider>,
+	document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change

@@ -1,37 +1,45 @@
-import {Integer, Property, Required} from "@tsed/schema";
-
+import { Integer, Property, Required } from "@tsed/schema";
 
 class ExecException {
-    @Property()
-    cmd?: string;
+	@Property()
+	cmd?: string;
 
-    @Property(Boolean)
-    killed?: boolean;
+	@Property(Boolean)
+	killed?: boolean;
 
-    @Integer()
-    code?: number;
+	@Integer()
+	code?: number;
 
-    @Property()
-    signal?: NodeJS.Signals;
+	@Property()
+	signal?: NodeJS.Signals;
 }
 
 export class RunResponse {
-    @Integer()
-    @Required()
-    code: number | null;
+	@Integer()
+	@Required()
+	code!: number | null;
 
-    @Property(ExecException)
-    error: ExecException | null;
+	@Property(ExecException)
+	error!: ExecException | null;
 
-    @Property(String)
-    signal: string | null;
+	@Property(String)
+	signal!: string | null;
 
-    @Property()
-    @Required()
-    stderr: string;
+	@Property()
+	@Required()
+	stderr!: string;
 
-    @Property()
-    @Required()
-    stdout: string;
+	@Property()
+	@Required()
+	stdout!: string;
+}
 
+export class RunRequest {
+	@Property()
+	@Required()
+	cwd!: string;
+
+	@Property()
+	@Required()
+	command!: string;
 }

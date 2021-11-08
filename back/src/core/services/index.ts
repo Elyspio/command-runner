@@ -1,10 +1,7 @@
-import {RunnerService} from "./runner";
-import {AuthenticationService} from "./authentication"
-import {StorageService} from "./storage";
-
+import { RunnerService } from "./runner.service";
+import { StorageService } from "./storage";
 
 export const Services = {
-    runner: new RunnerService(),
-    authentication: new AuthenticationService(),
-    storage: new StorageService()
-}
+	runner: new RunnerService(),
+	storage: new StorageService(),
+};

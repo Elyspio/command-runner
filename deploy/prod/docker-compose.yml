@@ -1,0 +1,36 @@
+version: "3"
+services:
+
+    # app
+    runner-server:
+        image: elyspio/runner:latest
+        container_name: runner-server
+        restart: always
+        labels:
+            - "traefik.enable=true"
+            - "traefik.docker.network=external"
+            - "traefik.http.routers.runner.rule=PathPrefix(`/runner`)"
+            - "traefik.http.services.runner.loadbalancer.server.port=4000"
+            - "traefik.http.routers.runner.entrypoints=external"
+        volumes:
+            - "./config/front/conf.js:/front/conf.js"
+            - "./logs:/app/logs"
+            - "./.ssh/id_rsa:/root/.ssh/id_rsa"
+            - "./.ssh/id_rsa.pub:/root/.ssh/id_rsa.pub"
+        environment:
+            SSH_USER: "elyspio"
+            SSH_HOST: 192.168.0.59
+            AUTHENTICATION_SERVER_URI: http://authentication-server:4000
+        networks:
+            - runner
+            - external
+            - authentication
+
+networks:
+    runner:
+        name: "runner"
+    external:
+        external: true
+    authentication:
+        external: true
+
