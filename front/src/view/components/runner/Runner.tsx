@@ -34,6 +34,7 @@ function Runner() {
 			result.open.set(!result.open.get);
 			e.stopPropagation();
 		},
+		loading: extract(React.useState(false)),
 	};
 
 	const error = {
@@ -51,8 +52,9 @@ function Runner() {
 		if (!(await services.authentication.isLogged())) {
 			dispatch(login());
 		}
-
+		result.loading.set(true);
 		let { data: resultValue, duration } = await services.runner.run({ command, cwd: directory });
+		result.loading.set(false);
 
 		error.value.set(resultValue.stderr ?? "");
 		result.value.set(resultValue.stdout ?? "");
@@ -61,14 +63,14 @@ function Runner() {
 		result.open.set(!!resultValue.stdout);
 
 		result.duration.set(duration);
-	}, [command, directory, error.open, error.value, result.open, result.value, services.runner, dispatch, services.authentication, result.duration]);
+	}, [result.loading, command, directory, error.open, error.value, result.open, result.value, services.runner, dispatch, services.authentication, result.duration]);
 
 	return (
 		<Paper className={"Runner"} sx={{ margin: 4 }}>
 			<Box className="form">
 				<TextField label="Command" fullWidth value={command} onChange={(e) => setCommand(e.target.value)} variant="outlined" />
 				<TextField label="Working directory" fullWidth value={directory} onChange={(e) => setDirectory(e.target.value)} variant="outlined" />
-				<Button color={"primary"} variant={"outlined"} onClick={run}>
+				<Button color={"primary"} variant={"outlined"} onClick={run} disabled={result.loading.get}>
 					Run
 				</Button>
 			</Box>

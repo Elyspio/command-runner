@@ -18,8 +18,9 @@ services:
             - "./.ssh/id_rsa:/root/.ssh/id_rsa"
             - "./.ssh/id_rsa.pub:/root/.ssh/id_rsa.pub"
         environment:
-            SSH_USER: "elyspio"
-            SSH_HOST: 192.168.0.59
+            SSH_USER: ${SSH_USER}
+            SSH_HOST: ${SSH_HOST}
+            SSH_SUDO_PASSWORD: ${SSH_SUDO_PASSWORD}
             AUTHENTICATION_SERVER_URI: http://authentication-server:4000
         networks:
             - runner

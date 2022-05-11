@@ -25,7 +25,17 @@ export class ConsoleAppender extends BaseAppender {
 		let isFirstObject = typeof msg[0] === "object";
 		const message = `${globalConf.appName} - ${data.categoryName} - ` + (isFirstObject ? `Complex data` : msg[0]);
 
-		gelfLog.message(message, lvl, isFirstObject ? msg[0] : { ...msg[1], app: globalConf.appName, node: data.categoryName });
+		gelfLog.message(
+			message,
+			lvl,
+			isFirstObject
+				? msg[0]
+				: {
+						...msg[1],
+						app: globalConf.appName,
+						node: data.categoryName,
+				  }
+		);
 	}
 }
 

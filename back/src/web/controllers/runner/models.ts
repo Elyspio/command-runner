@@ -1,16 +1,23 @@
-import { Integer, Property, Required } from "@tsed/schema";
+import { Default, Integer, Nullable, Optional, Property, Required } from "@tsed/schema";
 
 class ExecException {
 	@Property()
+	@Nullable(String)
 	cmd?: string;
 
 	@Property(Boolean)
+	@Optional()
+	@Nullable(Boolean)
 	killed?: boolean;
 
 	@Integer()
+	@Optional()
+	@Nullable(Number)
 	code?: number;
 
 	@Property()
+	@Optional()
+	@Nullable(String)
 	signal?: NodeJS.Signals;
 }
 
@@ -20,10 +27,12 @@ export class RunResponse {
 	code!: number | null;
 
 	@Property(ExecException)
-	error!: ExecException | null;
+	@Nullable(ExecException)
+	error?: ExecException;
 
 	@Property(String)
-	signal!: string | null;
+	@Nullable(String)
+	signal?: string;
 
 	@Property()
 	@Required()
@@ -42,4 +51,14 @@ export class RunRequest {
 	@Property()
 	@Required()
 	command!: string;
+
+	@Property()
+	@Default(false)
+	admin!: boolean;
+}
+
+export class RunFromAppRequest extends RunRequest {
+	@Property()
+	@Required()
+	token!: string;
 }

@@ -8,7 +8,7 @@ import { Inject } from "@tsed/di";
 
 @Middleware()
 export class RequireLogin implements IMiddleware {
-	private static log = getLogger.middleware(RequireLogin);
+	private static logger = getLogger.middleware(RequireLogin);
 
 	@Inject()
 	authenticationService!: AuthenticationService;
@@ -23,16 +23,19 @@ export class RequireLogin implements IMiddleware {
 			const cookieAuth = req.cookies[authorization_cookie_token];
 			const headerToken = req.headers[authorization_header_token];
 
-			RequireLogin.log.info("RequireLogin", {
+			RequireLogin.logger.info("RequireLogin", {
 				cookieAuth,
 				headerToken,
 				uriToken: token,
+				auth: this.authenticationService.isAuthenticated,
 			});
 
 			token = token ?? cookieAuth;
 			token = token ?? (headerToken as string);
 
-			if (await this.authenticationService.isAuthenticated(token)) {
+			let validate = await this.authenticationService.isAuthenticated(token);
+			console.error({ validate });
+			if (validate) {
 				req.auth = {
 					username: await this.authenticationService.getUsername(token),
 					token,
@@ -40,7 +43,7 @@ export class RequireLogin implements IMiddleware {
 				return true;
 			} else throw exception;
 		} catch (e) {
-			throw exception;
+			throw e;
 		}
 	}
 }
@@ -50,6 +53,9 @@ declare global {
 		interface Request {
 			auth?: {
 				username: string;
+				token: string;
+			};
+			appAuth: {
 				token: string;
 			};
 		}

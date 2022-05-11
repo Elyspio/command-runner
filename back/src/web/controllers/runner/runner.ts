@@ -9,7 +9,7 @@ export class Runner {
 	@Post("/")
 	@Protected()
 	@Returns(200, RunResponse)
-	async run(@Required @BodyParams() { command, cwd }: RunRequest) {
-		return Services.runner.run(command, { path: cwd });
+	async run(@Required(true) @BodyParams() { command, cwd, admin }: RunRequest) {
+		return Services.runner.run(command, { path: cwd, admin });
 	}
 }
