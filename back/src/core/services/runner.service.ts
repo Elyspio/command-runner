@@ -13,10 +13,11 @@ export class RunnerService {
 
 	public async run(command: Parameters<run>[0], options: Parameters<run>[1]): ReturnType<run> {
 		const isContained = await Promise.all([this.isContainer(), this.isWsl()]);
-		return (isContained[0] || isContained[1] ? this.runFromContainer : this.runFromHost).apply(this, [command, options]);
+		return (isContained.some(b => b) ? this.runFromContainer : this.runFromHost).apply(this, [command, options]);
 	}
 
 	async isContainer(): Promise<boolean> {
+		if(platform() === "win32") return false;
 		const { stdout } = await Helper.exec("cat /proc/1/sched | head -n 1");
 		this.logger.debug("Is container", { stdout });
 		return !stdout.includes("init");
